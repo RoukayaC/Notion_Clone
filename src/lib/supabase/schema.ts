@@ -1,6 +1,8 @@
 import { relations, sql } from "drizzle-orm";
 import {
+  bigint,
   boolean,
+  foreignKey,
   integer,
   jsonb,
   pgTable,
@@ -9,10 +11,9 @@ import {
   uuid,
 } from "drizzle-orm/pg-core";
 import {
-  prices,
-  products,
+  pricingPlanInterval,
+  pricingType,
   subscriptionStatus,
-  users,
 } from "../../../migrations/schema";
 
 export const workspaces = pgTable("workspaces", {
@@ -77,9 +78,64 @@ export const files = pgTable("files", {
     }),
 });
 
+export const users = pgTable(
+  "users",
+  {
+    id: uuid("id").primaryKey().notNull(),
+    fullName: text("full_name"),
+    avatarUrl: text("avatar_url"),
+    billingAddress: jsonb("billing_address"),
+    updatedAt: timestamp("updated_at", { withTimezone: true, mode: "string" }),
+    paymentMethod: jsonb("payment_method"),
+    email: text("email"),
+  },
+  (table) => {
+    return {
+      usersIdFkey: foreignKey({
+        columns: [table.id],
+        foreignColumns: [table.id],
+        name: "users_id_fkey",
+      }),
+    };
+  }
+);
+
+export const customers = pgTable("customers", {
+  id: uuid("id")
+    .primaryKey()
+    .notNull()
+    .references(() => users.id),
+  stripeCustomerId: text("stripe_customer_id"),
+});
+
+export const products = pgTable("products", {
+  id: text("id").primaryKey().notNull(),
+  active: boolean("active"),
+  name: text("name"),
+  description: text("description"),
+  image: text("image"),
+  metadata: jsonb("metadata"),
+});
+
+export const prices = pgTable("prices", {
+  id: text("id").primaryKey().notNull(),
+  productId: text("product_id").references(() => products.id),
+  active: boolean("active"),
+  description: text("description"),
+  unitAmount: bigint("unit_amount", { mode: "number" }),
+  currency: text("currency"),
+  type: pricingType("type"),
+  interval: pricingPlanInterval("interval"),
+  intervalCount: integer("interval_count"),
+  trialPeriodDays: integer("trial_period_days"),
+  metadata: jsonb("metadata"),
+});
+
 export const subscriptions = pgTable("subscriptions", {
   id: text("id").primaryKey().notNull(),
-  userId: uuid("user_id").notNull(),
+  userId: uuid("user_id")
+    .notNull()
+    .references(() => users.id),
   status: subscriptionStatus("status"),
   metadata: jsonb("metadata"),
   priceId: text("price_id").references(() => prices.id),
@@ -121,30 +177,3 @@ export const subscriptions = pgTable("subscriptions", {
     mode: "string",
   }).default(sql`now()`),
 });
-
-export const collaborators = pgTable("collaborators", {
-  id: uuid("id").defaultRandom().primaryKey().notNull(),
-  workspaceId: uuid("workspace_id")
-    .notNull()
-    .references(() => workspaces.id, { onDelete: "cascade" }),
-  createdAt: timestamp("created_at", {
-    withTimezone: true,
-    mode: "string",
-  })
-    .defaultNow()
-    .notNull(),
-  userId: uuid("user_id")
-    .notNull()
-    .references(() => users.id, { onDelete: "cascade" }),
-});
-
-export const productsRelations = relations(products, ({ many }) => ({
-  prices: many(prices),
-}));
-
-export const pricesRelations = relations(prices, ({ one }) => ({
-  product: one(products, {
-    fields: [prices.productId],
-    references: [products.id],
-  }),
-}));

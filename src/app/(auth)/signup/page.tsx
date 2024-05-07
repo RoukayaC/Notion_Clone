@@ -18,7 +18,6 @@ import React, { useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 
-import Logo from "../../../../public/cypresslogo.svg";
 import Loader from "@/components/global/Loader";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { MailCheck } from "lucide-react";
@@ -99,20 +98,12 @@ const Signup = () => {
           flex
           justify-left
           items-center"
-        >
-          <Image src={Logo} alt="cypress Logo" width={50} height={50} />
-          <span
-            className="font-semibold
-          dark:text-white text-4xl first-letter:ml-2"
-          >
-            cypress.
-          </span>
-        </Link>
+        ></Link>
         <FormDescription
           className="
         text-foreground/60"
         >
-          An all-In-One Collaboration and Productivity Platform
+          CREATE ACCOUNT
         </FormDescription>
         {!confirmation && !codeExchangeError && (
           <>

@@ -60,21 +60,11 @@ const LoginPage = () => {
           flex
           justify-left
           items-center"
-        >
-          <Image src={Logo} alt="cypress Logo" width={50} height={50} />
-          <span
-            className="font-semibold
-          dark:text-white text-4xl first-letter:ml-2"
-          >
-            cypress.
-          </span>
-        </Link>
+        ></Link>
         <FormDescription
           className="
         text-foreground/60"
-        >
-          An all-In-One Collaboration and Productivity Platform
-        </FormDescription>
+        ></FormDescription>
         <FormField
           disabled={isLoading}
           control={form.control}
