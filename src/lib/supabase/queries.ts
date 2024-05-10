@@ -90,7 +90,7 @@ export const getFileDetails = async (fileId: string) => {
       .limit(1)) as File[];
     return { data: response, error: null };
   } catch (error) {
-    console.log("🔴Error", error);
+    console.log("Error", error);
     return { data: [], error: "Error" };
   }
 };
@@ -258,7 +258,7 @@ export const getActiveProductsWithPrice = async () => {
 
       with: {
         prices: {
-          where: (pri, { eq }) => eq(pri.active, true),
+       //   where: (pri, { eq }) => eq(pri.active, true),
         },
       },
     });

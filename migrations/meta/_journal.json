@@ -15,6 +15,13 @@
       "when": 1715106602314,
       "tag": "0001_bored_jimmy_woo",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1715207358847,
+      "tag": "0002_useful_unus",
+      "breakpoints": true
     }
   ]
 }
