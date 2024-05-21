@@ -1,5 +1,5 @@
-import { SubscriptionModalProvider } from '@/lib/providers/subscription-modal-provider';
-import { getActiveProductsWithPrice } from '@/lib/supabase/queries';
+import MobileSidebar from '@/components/sidebar/mobile-sidebar';
+import Sidebar from '@/components/sidebar/sidebar';
 import React from 'react';
 
 interface LayoutProps {
@@ -7,11 +7,31 @@ interface LayoutProps {
   params: any;
 }
 
-const Layout: React.FC<LayoutProps> = async ({ children, params }) => {
-  
+const Layout: React.FC<LayoutProps> = ({ children, params }) => {
   return (
-    <main className="flex over-hidden h-screen">
+    <main
+      className="flex overflow-hidden
+      h-screen
+      w-screen
+  "
+    >
+      <Sidebar params={params} />
+      <MobileSidebar>
+        <Sidebar
+          params={params}
+          className="w-screen inline-block sm:hidden"
+        />
+      </MobileSidebar>
+      <div
+        className="dark:boder-Neutrals-12/70
+        border-l-[1px]
+        w-full
+        relative
+        overflow-scroll
+      "
+      >
         {children}
+      </div>
     </main>
   );
 };

@@ -11,6 +11,14 @@ interface PlanUsageProps {
   subscription: Subscription | null;
 }
 
+const PlanUsage: React.FC<PlanUsageProps> = ({
+  foldersLength,
+  subscription,
+}) => {
+  const { workspaceId, state } = useAppState();
+  const [usagePercentage, setUsagePercentage] = useState(
+    (foldersLength / MAX_FOLDERS_FREE_PLAN) * 100
+  );
 
   useEffect(() => {
     const stateFoldersLength = state.workspaces.find(

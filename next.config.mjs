@@ -4,9 +4,9 @@ const nextConfig = {
     serverActions: true,
   },
 
-images: {
-  domains: ['vjabkhngmcqtmwxzwmun.supabase.co'],
-},
+  images: {
+    domains: ['vjabkhngmcqtmwxzwmun.supabase.co'],
+  },
 
 };
 export default nextConfig;
