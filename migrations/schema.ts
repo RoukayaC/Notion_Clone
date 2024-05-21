@@ -10,6 +10,7 @@ export const factorStatus = pgEnum("factor_status", ['unverified', 'verified'])
 export const factorType = pgEnum("factor_type", ['totp', 'webauthn'])
 export const action = pgEnum("action", ['INSERT', 'UPDATE', 'DELETE', 'TRUNCATE', 'ERROR'])
 export const equalityOp = pgEnum("equality_op", ['eq', 'neq', 'lt', 'lte', 'gt', 'gte', 'in'])
+export const oneTimeTokenType = pgEnum("one_time_token_type", ['confirmation_token', 'reauthentication_token', 'recovery_token', 'email_change_token_new', 'email_change_token_current', 'phone_change_token'])
 export const pricingType = pgEnum("pricing_type", ['one_time', 'recurring'])
 export const pricingPlanInterval = pgEnum("pricing_plan_interval", ['day', 'week', 'month', 'year'])
 export const subscriptionStatus = pgEnum("subscription_status", ['trialing', 'active', 'canceled', 'incomplete', 'incomplete_expired', 'past_due', 'unpaid'])
@@ -106,49 +107,48 @@ export const prices = pgTable("prices", {
 });
 
 
-export const subscriptions = pgTable("subscriptions", {
-	id: text("id").primaryKey().notNull(),
-	userId: uuid("user_id")
-	  .notNull()
-	  .references(() => users.id),
-	status: subscriptionStatus("status"),
-	metadata: jsonb("metadata"),
-	priceId: text("price_id").references(() => prices.id),
-	quantity: integer("quantity"),
-	cancelAtPeriodEnd: boolean("cancel_at_period_end"),
-	created: timestamp("created", { withTimezone: true, mode: "string" })
+export const subscriptions = pgTable('subscriptions', {
+	id: text('id').primaryKey().notNull(),
+	userId: uuid('user_id').notNull(),
+	status: subscriptionStatus('status'),
+	metadata: jsonb('metadata'),
+	priceId: text('price_id').references(() => prices.id),
+	quantity: integer('quantity'),
+	cancelAtPeriodEnd: boolean('cancel_at_period_end'),
+	created: timestamp('created', { withTimezone: true, mode: 'string' })
 	  .default(sql`now()`)
 	  .notNull(),
-	currentPeriodStart: timestamp("current_period_start", {
+	currentPeriodStart: timestamp('current_period_start', {
 	  withTimezone: true,
-	  mode: "string",
+	  mode: 'string',
 	})
 	  .default(sql`now()`)
 	  .notNull(),
-	currentPeriodEnd: timestamp("current_period_end", {
+	currentPeriodEnd: timestamp('current_period_end', {
 	  withTimezone: true,
-	  mode: "string",
+	  mode: 'string',
 	})
 	  .default(sql`now()`)
 	  .notNull(),
-	endedAt: timestamp("ended_at", {
+	endedAt: timestamp('ended_at', {
 	  withTimezone: true,
-	  mode: "string",
+	  mode: 'string',
 	}).default(sql`now()`),
-	cancelAt: timestamp("cancel_at", {
+	cancelAt: timestamp('cancel_at', {
 	  withTimezone: true,
-	  mode: "string",
+	  mode: 'string',
 	}).default(sql`now()`),
-	canceledAt: timestamp("canceled_at", {
+	canceledAt: timestamp('canceled_at', {
 	  withTimezone: true,
-	  mode: "string",
+	  mode: 'string',
 	}).default(sql`now()`),
-	trialStart: timestamp("trial_start", {
+	trialStart: timestamp('trial_start', {
 	  withTimezone: true,
-	  mode: "string",
+	  mode: 'string',
 	}).default(sql`now()`),
-	trialEnd: timestamp("trial_end", {
+	trialEnd: timestamp('trial_end', {
 	  withTimezone: true,
-	  mode: "string",
+	  mode: 'string',
 	}).default(sql`now()`),
   });
+  

@@ -88,6 +88,9 @@ body {
   @apply dark:bg-background text-white font-medium shadow-none dark:border-[1px] !important;
 }
 
+.cdx-search-input {
+  @apply bg-background;
+}
 
 .cdx-search-field {
   @apply bg-background;
@@ -123,7 +126,6 @@ body {
   @apply !border-none;
 }
 
-.ql-editor > p,
-.ql-editor ol {
-  /* Your styles here */
+.ql-editor {
+  @apply !border-none;
 }
