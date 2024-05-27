@@ -1,12 +1,13 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   experimental: {
-    serverActions: true,
+    serverActions: {
+      bodySizeLimit: "2mb",
+    },
   },
 
   images: {
-    domains: ['vjabkhngmcqtmwxzwmun.supabase.co'],
+    domains: ["vjabkhngmcqtmwxzwmun.supabase.co"],
   },
-
 };
 export default nextConfig;

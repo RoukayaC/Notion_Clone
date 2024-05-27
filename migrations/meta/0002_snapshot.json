@@ -1,5 +1,5 @@
 {
-  "id": "98a170be-f00a-4150-a8ad-143a1263bfbc",
+  "id": "f5d0f87c-3f08-46ab-a01e-d22c178757e8",
   "prevId": "8737c73c-2ca8-4476-b43c-f263d84aae4a",
   "version": "5",
   "dialect": "pg",
@@ -85,21 +85,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "customers_id_users_id_fk": {
-          "name": "customers_id_users_id_fk",
-          "tableFrom": "customers",
-          "tableTo": "users",
-          "columnsFrom": [
-            "id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -511,19 +497,6 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "subscriptions_user_id_users_id_fk": {
-          "name": "subscriptions_user_id_users_id_fk",
-          "tableFrom": "subscriptions",
-          "tableTo": "users",
-          "columnsFrom": [
-            "user_id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
         "subscriptions_price_id_prices_id_fk": {
           "name": "subscriptions_price_id_prices_id_fk",
           "tableFrom": "subscriptions",
@@ -589,21 +562,7 @@
         }
       },
       "indexes": {},
-      "foreignKeys": {
-        "users_id_fkey": {
-          "name": "users_id_fkey",
-          "tableFrom": "users",
-          "tableTo": "users",
-          "columnsFrom": [
-            "id"
-          ],
-          "columnsTo": [
-            "id"
-          ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        }
-      },
+      "foreignKeys": {},
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
@@ -674,7 +633,112 @@
       "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "aal_level": {
+      "name": "aal_level",
+      "values": {
+        "aal3": "aal3",
+        "aal2": "aal2",
+        "aal1": "aal1"
+      }
+    },
+    "action": {
+      "name": "action",
+      "values": {
+        "ERROR": "ERROR",
+        "TRUNCATE": "TRUNCATE",
+        "DELETE": "DELETE",
+        "UPDATE": "UPDATE",
+        "INSERT": "INSERT"
+      }
+    },
+    "code_challenge_method": {
+      "name": "code_challenge_method",
+      "values": {
+        "plain": "plain",
+        "s256": "s256"
+      }
+    },
+    "equality_op": {
+      "name": "equality_op",
+      "values": {
+        "in": "in",
+        "gte": "gte",
+        "gt": "gt",
+        "lte": "lte",
+        "lt": "lt",
+        "neq": "neq",
+        "eq": "eq"
+      }
+    },
+    "factor_status": {
+      "name": "factor_status",
+      "values": {
+        "verified": "verified",
+        "unverified": "unverified"
+      }
+    },
+    "factor_type": {
+      "name": "factor_type",
+      "values": {
+        "webauthn": "webauthn",
+        "totp": "totp"
+      }
+    },
+    "key_status": {
+      "name": "key_status",
+      "values": {
+        "expired": "expired",
+        "invalid": "invalid",
+        "valid": "valid",
+        "default": "default"
+      }
+    },
+    "key_type": {
+      "name": "key_type",
+      "values": {
+        "stream_xchacha20": "stream_xchacha20",
+        "secretstream": "secretstream",
+        "secretbox": "secretbox",
+        "kdf": "kdf",
+        "generichash": "generichash",
+        "shorthash": "shorthash",
+        "auth": "auth",
+        "hmacsha256": "hmacsha256",
+        "hmacsha512": "hmacsha512",
+        "aead-det": "aead-det",
+        "aead-ietf": "aead-ietf"
+      }
+    },
+    "pricing_plan_interval": {
+      "name": "pricing_plan_interval",
+      "values": {
+        "year": "year",
+        "month": "month",
+        "week": "week",
+        "day": "day"
+      }
+    },
+    "pricing_type": {
+      "name": "pricing_type",
+      "values": {
+        "recurring": "recurring",
+        "one_time": "one_time"
+      }
+    },
+    "subscription_status": {
+      "name": "subscription_status",
+      "values": {
+        "unpaid": "unpaid",
+        "past_due": "past_due",
+        "incomplete_expired": "incomplete_expired",
+        "incomplete": "incomplete",
+        "canceled": "canceled",
+        "active": "active",
+        "trialing": "trialing"
+      }
+    }
+  },
   "schemas": {},
   "_meta": {
     "columns": {},

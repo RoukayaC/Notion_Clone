@@ -17,7 +17,7 @@ export async function middleware(req: NextRequest) {
     req.nextUrl.searchParams.get("error_description") === emailListError &&
     req.nextUrl.pathname !== "/signup"
   ) {
-    return NextResponse.redirect(new URL('/signup?error_description=$req.nextUrl.serchParams.get("error_description")', req.url));
+    return NextResponse.redirect(new URL(`/signup?error_description=${req.nextUrl.searchParams.get("error_description")}`, req.url));
   }
 
   if(['/login', '/signup'].includes(req.nextUrl.pathname)) {

@@ -19,15 +19,8 @@
     {
       "idx": 2,
       "version": "5",
-      "when": 1715207358847,
-      "tag": "0002_useful_unus",
-      "breakpoints": true
-    },
-    {
-      "idx": 3,
-      "version": "5",
-      "when": 1716319086661,
-      "tag": "0003_fine_stryfe",
+      "when": 1716832477537,
+      "tag": "0002_abandoned_omega_sentinel",
       "breakpoints": true
     }
   ]
