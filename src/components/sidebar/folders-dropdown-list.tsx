@@ -29,7 +29,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
   const [folders, setFolders] = useState(workspaceFolders);
   const { subscription } = useSupabaseUser();
 
-  //effec set nitial satte server app state
+  //effect set nitial satte server app state
   useEffect(() => {
     if (workspaceFolders.length > 0) {
       dispatch({
@@ -46,7 +46,8 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
         },
       });
     }
-  }, [dispatch, state.workspaces, workspaceFolders, workspaceId]);
+    //eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [workspaceFolders, workspaceId]);
   //state
 
   useEffect(() => {
@@ -54,7 +55,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
       state.workspaces.find((workspace) => workspace.id === workspaceId)
         ?.folders || []
     );
-  }, [state]);
+  }, [state.workspaces]);
 
   //add folder
   const addFolderHandler = async () => {

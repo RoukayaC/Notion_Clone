@@ -56,7 +56,7 @@ export const getFolders = async (workspaceId: string) => {
 };
 
 export const getWorkspaceDetails = async (workspaceId: string) => {
-  
+
   const isValid = validate(workspaceId);
   if (!isValid)
     return {

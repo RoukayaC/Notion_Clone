@@ -7,7 +7,7 @@ import { redirect } from 'next/navigation';
 
 const Folder = async ({ params }: { params: { folderId: string } }) => {
   const { data, error } = await getFolderDetails(params.folderId);
-  if (error || !data.length) redirect('/dashboard');
+ if (error || !data.length) redirect('/dashboard');
 
   return (
     <div className="relative ">
