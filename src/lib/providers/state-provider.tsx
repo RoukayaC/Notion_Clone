@@ -320,7 +320,7 @@ const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) => {
         return urlSegments[3];
       }
   }, [pathname]);
-
+/*
   useEffect(() => {
     if (!folderId || !workspaceId) return;
     const fetchFiles = async () => {
@@ -336,7 +336,7 @@ const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) => {
     };
     fetchFiles();
   }, [folderId, workspaceId]);
-
+*/
   useEffect(() => {
     console.log('App State Changed', state);
   }, [state]);
@@ -349,7 +349,6 @@ const AppStateProvider: React.FC<AppStateProviderProps> = ({ children }) => {
     </AppStateContext.Provider>
   );
 };
-
 export default AppStateProvider;
 
 export const useAppState = () => {

@@ -18,7 +18,7 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[];
 
-export interface Database {
+export type Database = {
   public: {
     Tables: {
       collaborators: {
@@ -42,14 +42,16 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "collaborators_user_id_fkey";
+            foreignKeyName: "collaborators_user_id_users_id_fk";
             columns: ["user_id"];
+            isOneToOne: false;
             referencedRelation: "users";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "collaborators_workspace_id_fkey";
+            foreignKeyName: "collaborators_workspace_id_workspaces_id_fk";
             columns: ["workspace_id"];
+            isOneToOne: false;
             referencedRelation: "workspaces";
             referencedColumns: ["id"];
           }
@@ -68,14 +70,7 @@ export interface Database {
           id?: string;
           stripe_customer_id?: string | null;
         };
-        Relationships: [
-          {
-            foreignKeyName: "customers_id_fkey";
-            columns: ["id"];
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
-        ];
+        Relationships: [];
       };
       files: {
         Row: {
@@ -115,12 +110,14 @@ export interface Database {
           {
             foreignKeyName: "files_folder_id_folders_id_fk";
             columns: ["folder_id"];
+            isOneToOne: false;
             referencedRelation: "folders";
             referencedColumns: ["id"];
           },
           {
             foreignKeyName: "files_workspace_id_workspaces_id_fk";
             columns: ["workspace_id"];
+            isOneToOne: false;
             referencedRelation: "workspaces";
             referencedColumns: ["id"];
           }
@@ -161,6 +158,7 @@ export interface Database {
           {
             foreignKeyName: "folders_workspace_id_workspaces_id_fk";
             columns: ["workspace_id"];
+            isOneToOne: false;
             referencedRelation: "workspaces";
             referencedColumns: ["id"];
           }
@@ -212,8 +210,9 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "prices_product_id_fkey";
+            foreignKeyName: "prices_product_id_products_id_fk";
             columns: ["product_id"];
+            isOneToOne: false;
             referencedRelation: "products";
             referencedColumns: ["id"];
           }
@@ -300,21 +299,10 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: "subscriptions_price_id_fkey";
-            columns: ["price_id"];
-            referencedRelation: "prices";
-            referencedColumns: ["id"];
-          },
-          {
             foreignKeyName: "subscriptions_price_id_prices_id_fk";
             columns: ["price_id"];
+            isOneToOne: false;
             referencedRelation: "prices";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "subscriptions_user_id_fkey";
-            columns: ["user_id"];
-            referencedRelation: "users";
             referencedColumns: ["id"];
           }
         ];
@@ -347,14 +335,7 @@ export interface Database {
           payment_method?: Json | null;
           updated_at?: string | null;
         };
-        Relationships: [
-          {
-            foreignKeyName: "users_id_fkey";
-            columns: ["id"];
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          }
-        ];
+        Relationships: [];
       };
       workspaces: {
         Row: {
@@ -400,22 +381,123 @@ export interface Database {
       [_ in never]: never;
     };
     Enums: {
-      pricing_plan_interval: "day" | "week" | "month" | "year";
-      pricing_type: "one_time" | "recurring";
+      aal_level: "aal3" | "aal2" | "aal1";
+      action: "ERROR" | "TRUNCATE" | "DELETE" | "UPDATE" | "INSERT";
+      code_challenge_method: "plain" | "s256";
+      equality_op: "in" | "gte" | "gt" | "lte" | "lt" | "neq" | "eq";
+      factor_status: "verified" | "unverified";
+      factor_type: "webauthn" | "totp";
+      key_status: "expired" | "invalid" | "valid" | "default";
+      key_type:
+        | "stream_xchacha20"
+        | "secretstream"
+        | "secretbox"
+        | "kdf"
+        | "generichash"
+        | "shorthash"
+        | "auth"
+        | "hmacsha256"
+        | "hmacsha512"
+        | "aead-det"
+        | "aead-ietf";
+      pricing_plan_interval: "year" | "month" | "week" | "day";
+      pricing_type: "recurring" | "one_time";
       subscription_status:
-        | "trialing"
-        | "active"
-        | "canceled"
-        | "incomplete"
-        | "incomplete_expired"
+        | "unpaid"
         | "past_due"
-        | "unpaid";
+        | "incomplete_expired"
+        | "incomplete"
+        | "canceled"
+        | "active"
+        | "trialing";
     };
     CompositeTypes: {
       [_ in never]: never;
     };
   };
-}
+};
+
+type PublicSchema = Database[Extract<keyof Database, "public">];
+
+export type Tables<
+  PublicTableNameOrOptions extends
+    | keyof (PublicSchema["Tables"] & PublicSchema["Views"])
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+        Database[PublicTableNameOrOptions["schema"]]["Views"])
+    : never = never
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? (Database[PublicTableNameOrOptions["schema"]]["Tables"] &
+      Database[PublicTableNameOrOptions["schema"]]["Views"])[TableName] extends {
+      Row: infer R;
+    }
+    ? R
+    : never
+  : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
+      PublicSchema["Views"])
+  ? (PublicSchema["Tables"] &
+      PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+      Row: infer R;
+    }
+    ? R
+    : never
+  : never;
+
+export type TablesInsert<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Insert: infer I;
+    }
+    ? I
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+      Insert: infer I;
+    }
+    ? I
+    : never
+  : never;
+
+export type TablesUpdate<
+  PublicTableNameOrOptions extends
+    | keyof PublicSchema["Tables"]
+    | { schema: keyof Database },
+  TableName extends PublicTableNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicTableNameOrOptions["schema"]]["Tables"]
+    : never = never
+> = PublicTableNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicTableNameOrOptions["schema"]]["Tables"][TableName] extends {
+      Update: infer U;
+    }
+    ? U
+    : never
+  : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
+  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+      Update: infer U;
+    }
+    ? U
+    : never
+  : never;
+
+export type Enums<
+  PublicEnumNameOrOptions extends
+    | keyof PublicSchema["Enums"]
+    | { schema: keyof Database },
+  EnumName extends PublicEnumNameOrOptions extends { schema: keyof Database }
+    ? keyof Database[PublicEnumNameOrOptions["schema"]]["Enums"]
+    : never = never
+> = PublicEnumNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
+  : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
+  ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+  : never;
 
 export type workspace = InferSelectModel<typeof workspaces>;
 export type User = InferSelectModel<typeof users>;
