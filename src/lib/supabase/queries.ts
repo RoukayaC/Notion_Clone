@@ -289,7 +289,6 @@ export const createFile = async (file: File) => {
     return { data: null, error: "Error" };
   }
 };
-
 export const updateFolder = async (
   folder: Partial<Folder>,
   folderId: string

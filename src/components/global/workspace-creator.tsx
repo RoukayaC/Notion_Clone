@@ -22,6 +22,55 @@ import { ScrollArea } from '../ui/scroll-area';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import { useToast } from '../ui/use-toast';
 
+// Array of users
+const users = [
+    {
+        id: "1",
+        fullname: "John Doe",
+        avatarURL: "http://example.com/avatars/johndoe.jpg",
+        billingAddress: { street: "123 Main St", city: "Anytown", country: "USA" },
+        updatedAt: "2024-05-30T12:00:00Z",
+        paymentMethod: { type: "credit card", last4: "1234" },
+        email: "johndoe@example.com"
+    },
+    {
+        id: "2",
+        fullname: null,
+        avatarURL: null,
+        billingAddress: { street: "456 Oak St", city: "Othertown", country: "USA" },
+        updatedAt: null,
+        paymentMethod: { type: "paypal", email: "janedoe@paypal.com" },
+        email: "janedoe@example.com"
+    },
+    {
+        id: "3",
+        fullname: "Alice Smith",
+        avatarURL: "http://example.com/avatars/alicesmith.jpg",
+        billingAddress: { street: "789 Pine St", city: "Thistown", country: "USA" },
+        updatedAt: "2024-05-29T15:30:00Z",
+        paymentMethod: { type: "bank transfer", accountNumber: "987654321" },
+        email: null
+    },
+    {
+        id: "4",
+        fullname: "Bob Johnson",
+        avatarURL: null,
+        billingAddress: { street: "101 Maple St", city: "Yettown", country: "USA" },
+        updatedAt: "2024-05-28T08:45:00Z",
+        paymentMethod: { type: "credit card", last4: "5678" },
+        email: "bobjohnson@example.com"
+    },
+    {
+        id: "5",
+        fullname: "Carol White",
+        avatarURL: "http://example.com/avatars/carolwhite.jpg",
+        billingAddress: { street: "202 Birch St", city: "Newtown", country: "USA" },
+        updatedAt: "2024-05-27T19:20:00Z",
+        paymentMethod: { type: "apple pay", device: "iPhone 12" },
+        email: "carolwhite@example.com"
+    }
+];
+
 const WorkspaceCreator = () => {
   const { user } = useSupabaseUser();
   const { toast } = useToast();
