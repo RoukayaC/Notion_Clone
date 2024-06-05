@@ -69,7 +69,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   }, [state, listType, workspaceId, id, title]);
 
   //Navigate the user to a different page
-  const navigatatePage = (accordionId: string, type: string) => {
+  const navigatePage = (accordionId: string, type: string) => {
     if (type === 'folder') {
       router.push(`/dashboard/${workspaceId}/${accordionId}`);
     }
@@ -303,7 +303,7 @@ const Dropdown: React.FC<DropdownProps> = ({
       className={listStyles}
       onClick={(e) => {
         e.stopPropagation();
-        navigatatePage(id, listType);
+        navigatePage(id, listType);
       }}
     >
       <AccordionTrigger

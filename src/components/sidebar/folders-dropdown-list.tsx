@@ -27,6 +27,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
   const { open, setOpen } = useSubscriptionModal();
   const { toast } = useToast();
   const [folders, setFolders] = useState(workspaceFolders);
+  console.log(workspaceFolders)
   const { subscription } = useSupabaseUser();
 
   //effect set nitial satte server app state
@@ -55,7 +56,7 @@ const FoldersDropdownList: React.FC<FoldersDropdownListProps> = ({
       state.workspaces.find((workspace) => workspace.id === workspaceId)
         ?.folders || []
     );
-  }, [state.workspaces]);
+  }, [state]);
 
   //add folder
   const addFolderHandler = async () => {
